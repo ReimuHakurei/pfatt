@@ -69,8 +69,6 @@ if [ "$EAP_MODE" = "bridge" ] ; then
   /usr/bin/logger -st "pfatt" "configuring EAP environment for $EAP_MODE mode..."
   /usr/bin/logger -st "pfatt" "cabling should look like this:"
   /usr/bin/logger -st "pfatt" "  ONT---[] [$ONT_IF]$HOST[$EAP_BRIDGE_IF] []---[] [ONT_PORT]ResidentialGateway"
-  /usr/bin/logger -st "pfatt" "loading netgraph kernel modules..."
-  /sbin/kldload -nq /conf/pfatt/bin/ng_etf.ko
   /usr/bin/logger -st "pfatt" "attaching interfaces to ng_ether..."
   /usr/local/bin/php -r "pfSense_ngctl_attach('.', '$ONT_IF');"
   /usr/local/bin/php -r "pfSense_ngctl_attach('.', '$EAP_BRIDGE_IF');"
