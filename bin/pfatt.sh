@@ -34,7 +34,7 @@
 # ===============
 ONT_IF="igb0"
 RG_ETHER_ADDR="00:00:00:00:00:00"
-EAP_MODE="bridge"
+EAP_MODE="supplicant"
 
 # Supplicant Config
 # =================
@@ -149,6 +149,7 @@ elif [ "$EAP_MODE" = "supplicant" ] ; then
   /usr/sbin/ngctl msg ngeth0: set $RG_ETHER_ADDR
 
   /usr/bin/logger -st "pfatt" "enabling promisc for $ONT_IF..."
+  /sbin/ifconfig $ONT_IF ether $RG_ETHER_ADDR
   /sbin/ifconfig $ONT_IF up
   /sbin/ifconfig $ONT_IF promisc
 
@@ -170,10 +171,10 @@ elif [ "$EAP_MODE" = "supplicant" ] ; then
     enable_network 0\
   "
 
-  WPA_DAEMON_CMD="/usr/sbin/wpa_supplicant -Dwired -ingeth0 -B -C /var/run/wpa_supplicant"
+  WPA_DAEMON_CMD="/usr/sbin/wpa_supplicant -Dwired -i$ONT_IF -B -C /var/run/wpa_supplicant"
 
   # kill any existing wpa_supplicant process
-  PID=$(pgrep -f "wpa_supplicant.*ngeth0")
+  PID=$(pgrep -f "wpa_supplicant.*$ONT_IF")
   if [ ${PID} > 0 ];
   then
     /usr/bin/logger -st "pfatt" "terminating existing wpa_supplicant on PID ${PID}..."
