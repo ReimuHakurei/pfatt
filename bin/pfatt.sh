@@ -56,16 +56,16 @@ EAP_BRIDGE_5268AC=0
 /usr/bin/logger -st "pfatt" "  EAP_BRIDGE_IF = $EAP_BRIDGE_IF"
 /usr/bin/logger -st "pfatt" "  EAP_BRIDGE_5268AC = $EAP_BRIDGE_5268AC"
 
-/usr/bin/logger -st "pfatt" "resetting netgraph..."
-/usr/sbin/ngctl shutdown waneapfilter: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown laneapfilter: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown $ONT_IF: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown $EAP_BRIDGE_IF: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown o2m: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown vlan0: >/dev/null 2>&1
-/usr/sbin/ngctl shutdown ngeth0: >/dev/null 2>&1
-
 if [ "$EAP_MODE" = "bridge" ] ; then
+  /usr/bin/logger -st "pfatt" "resetting netgraph..."
+  /usr/sbin/ngctl shutdown waneapfilter: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown laneapfilter: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown $ONT_IF: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown $EAP_BRIDGE_IF: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown o2m: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown vlan0: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown ngeth0: >/dev/null 2>&1
+
   /usr/bin/logger -st "pfatt" "configuring EAP environment for $EAP_MODE mode..."
   /usr/bin/logger -st "pfatt" "cabling should look like this:"
   /usr/bin/logger -st "pfatt" "  ONT---[] [$ONT_IF]$HOST[$EAP_BRIDGE_IF] []---[] [ONT_PORT]ResidentialGateway"
@@ -138,6 +138,11 @@ if [ "$EAP_MODE" = "bridge" ] ; then
   /usr/bin/logger -st "pfatt" "done!"
 
 elif [ "$EAP_MODE" = "supplicant" ] ; then
+  /usr/bin/logger -st "pfatt" "resetting netgraph..."
+  /usr/sbin/ngctl shutdown $ONT_IF: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown vlan0: >/dev/null 2>&1
+  /usr/sbin/ngctl shutdown ngeth0: >/dev/null 2>&1
+  
   /usr/bin/logger -st "pfatt" "configuring EAP environment for $EAP_MODE mode..."
   /usr/bin/logger -st "pfatt" "cabling should look like this:"
   /usr/bin/logger -st "pfatt" "  ONT---[] [$ONT_IF]$HOST"
